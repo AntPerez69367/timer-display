@@ -1,3 +1,4 @@
+import time
 import threading
 from rgbmatrix import graphics
 from rgbmatrix import RGBMatrix
@@ -63,3 +64,4 @@ class Display(threading.Thread):
 
 if __name__ == '__main__':
     displaytext = Display()
+    displaytext.run()
