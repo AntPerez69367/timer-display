@@ -5,11 +5,8 @@ from samplebase import SampleBase
 
 class Display(SampleBase):
     def __init__(self, *args, **kwargs):
-
-        # Configure LED matrix driver
-        self._matrix = RGBMatrix(32, 2, 1)
-        self._matrix.pwmBits = 11
-        self._matrix.brightness = 25
+        super(RunText, self).__init__(*args, **kwargs)
+        self.parser.add_argument("-t", "--text", help="The text to scroll on the RGB LED panel", default="Hello world!")
 
         # Load fonts
         self._font_large = graphics.Font()
@@ -53,12 +50,12 @@ class Display(SampleBase):
 
 
     def run(self):
-        canvas = self._matrix.CreateFrameCanvas()
+        canvas = self.matrix.CreateFrameCanvas()
 
         while True:
             self._draw(canvas)
             time.sleep(0.05)
-            canvas = self._matrix.SwapOnVSync(canvas)
+            canvas = self.matrix.SwapOnVSync(canvas)
 
 if __name__ == '__main__':
     displaytext = Display()

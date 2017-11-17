@@ -11,7 +11,7 @@ class SampleBase(object):
     def __init__(self, *args, **kwargs):
         self.parser = argparse.ArgumentParser()
 
-        self.parser.add_argument("-r", "--led-rows", action="store", help="Display rows. 16 for 16x32, 32 for 32x32. Default: 32", default=32, type=int)
+        self.parser.add_argument("-r", "--led-rows", action="store", help="Display rows. 16 for 16x32, 32 for 32x32. Default: 16", default=16, type=int)
         self.parser.add_argument("-c", "--led-chain", action="store", help="Daisy-chained boards. Default: 1.", default=1, type=int)
         self.parser.add_argument("-P", "--led-parallel", action="store", help="For Plus-models or RPi2: parallel chains. 1..3. Default: 1", default=1, type=int)
         self.parser.add_argument("-p", "--led-pwm-bits", action="store", help="Bits used for PWM. Something between 1..11. Default: 11", default=11, type=int)
@@ -36,10 +36,10 @@ class SampleBase(object):
         options = RGBMatrixOptions()
 
         if self.args.led_gpio_mapping != None:
-          options.hardware_mapping = self.args.led_gpio_mapping
-        options.rows = self.args.led_rows
-        options.chain_length = self.args.led_chain
-        options.parallel = self.args.led_parallel
+        options.hardware_mapping = 'adafruit-hat'
+        options.rows = 16
+        options.chain_length = 1
+        options.parallel = 1
         options.pwm_bits = self.args.led_pwm_bits
         options.brightness = self.args.led_brightness
         options.pwm_lsb_nanoseconds = self.args.led_pwm_lsb_nanoseconds
