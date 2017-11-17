@@ -1,12 +1,10 @@
 import time
-import threading
 from rgbmatrix import graphics
 from rgbmatrix import RGBMatrix
+from samplebase import SampleBase
 
-
-class Display(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
+class Display(SampleBase):
+    def __init__(self, *args, **kwargs):
 
         # Configure LED matrix driver
         self._matrix = RGBMatrix(32, 2, 1)
@@ -64,4 +62,3 @@ class Display(threading.Thread):
 
 if __name__ == '__main__':
     displaytext = Display()
-    displaytext.run()
