@@ -36,16 +36,16 @@ class SampleBase(object):
         options = RGBMatrixOptions()
 
         if self.args.led_gpio_mapping != None:
-        options.hardware_mapping = 'adafruit-hat'
-        options.rows = 16
-        options.chain_length = 1
-        options.parallel = 1
-        options.pwm_bits = self.args.led_pwm_bits
-        options.brightness = self.args.led_brightness
-        options.pwm_lsb_nanoseconds = self.args.led_pwm_lsb_nanoseconds
-        options.led_rgb_sequence = self.args.led_rgb_sequence
+            options.hardware_mapping = 'adafruit-hat'
+            options.rows = 16
+            options.chain_length = 1
+            options.parallel = 1
+            options.pwm_bits = self.args.led_pwm_bits
+            options.brightness = self.args.led_brightness
+            options.pwm_lsb_nanoseconds = self.args.led_pwm_lsb_nanoseconds
+            options.led_rgb_sequence = self.args.led_rgb_sequence
         if self.args.led_show_refresh:
-          options.show_refresh_rate = 1
+            options.show_refresh_rate = 1
 
         if self.args.led_slowdown_gpio != None:
             options.gpio_slowdown = self.args.led_slowdown_gpio

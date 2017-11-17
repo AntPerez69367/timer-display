@@ -57,5 +57,4 @@ class Display(SampleBase):
             time.sleep(0.05)
             canvas = self.matrix.SwapOnVSync(canvas)
 
-if __name__ == '__main__':
     displaytext = Display()
