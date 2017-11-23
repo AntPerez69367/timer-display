@@ -19,34 +19,37 @@ advertise_service( server_sock, "TimerDisplay",
 				   profiles = [ SERIAL_PORT_PROFILE ],
 #                   protocols = [ OBEX_UUID ]
 					)
-myLED = Display()
 
 print("Waiting for connection on RFCOMM channel %d" % port)
 
 client_sock, client_info = server_sock.accept()
 print("Accepted connection from ", client_info)
+myLED = Display()
+myLED.isDaemon = True
+myLED.start()
 
 try:
-	myLED.sessionSet('00:00:00', 0)
-	myLED.start()
+
 	while True:
+		# Receive Data
 		data = client_sock.recv(1024).decode()
 		if len(data) == 0:
 			pass
 		else:
 			print("received [%s]" % data)
+			# Stop Command
 			if data == '99':
-				if myLED.isAlive():
-					myLED.stop()
+				myLED.sessionSet("00:00:00", 0)
+				myLED.running = False
 			else:
-				if myLED.is_alive:
+			# Start Command
+				if myLED.running:
 					print("Thread already started")
 					pass
 				else:
-					myLED = Display()
-					myLED.start()
 					args = data.split('_')
 					myLED.sessionSet(args[0], args[2])
+					myLED.running = True
 					print ("Received Timer Data: %s" % (args[0]))
 					print ("Received Survey Name: %s" % (args[1]))
 					print ("Received Slide Length: %s" % (args[2]))
