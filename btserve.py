@@ -10,11 +10,15 @@ import threading
 
 class BluetoothServer(threading.Thread):
 	def __init__(self):
+		self.connected = False
 		self.server_sock=BluetoothSocket( RFCOMM )
 		self.server_sock.bind(("",PORT_ANY))
 		self.server_sock.listen(1)
 		self.port = self.server_sock.getsockname()[1]
 		self.uuid = "00001101-0000-1000-8000-00805f9b34fb"
+		myLED = Display()
+		myLED.isDaemon = True
+		myLED.start()
 
 		advertise_service( self.server_sock, "TimerDisplay",
 					   service_id = self.uuid,
@@ -23,14 +27,11 @@ class BluetoothServer(threading.Thread):
 	#                   protocols = [ OBEX_UUID ]
 						)
 
-		print("Waiting for connection on RFCOMM channel %d" % self.port)
-		self.client_sock, self.client_info = self.server_sock.accept()
-		print("Accepted connection from ", self.client_info)
-		myLED = Display()
-		myLED.isDaemon = True
-		myLED.start()
-		try:
-			while True:
+		while True:
+			try:
+				if not self.connected:
+					self.hostbt()
+
 				# Receive Data
 				data = self.client_sock.recv(1024).decode()
 				if len(data) == 0:
@@ -57,13 +58,19 @@ class BluetoothServer(threading.Thread):
 							print ("Received Timer Data: %s" % (args[0]))
 							print ("Received Survey Name: %s" % (args[1]))
 							print ("Received Slide Length: %s" % (args[2]))
-		except IOError:
-				pass
+			except Exception as e:
+				self.connected = False
 
-		print("disconnected")
-		client_sock.close()
-		server_sock.close()
-		print("all done")
+		self.closeconnections()
+
+
+
+	def hostbt(self):
+		print("Waiting for connection on RFCOMM channel %d" % self.port)
+		self.client_sock, self.client_info = self.server_sock.accept()
+		print("Accepted connection from ", self.client_info)
+		self.connected = True
+
 
 	def send(self, output):
 		try:
@@ -71,6 +78,13 @@ class BluetoothServer(threading.Thread):
 			self.sock.send(output.encode())
 		except Exception as e:
 			print("Unable to send: %s" % (output))
+
+
+	def closeconnections(self):
+		print("disconnected")
+		self.client_sock.close()
+		self.server_sock.close()
+		print("all done")
 
 if __name__ == "__main__":
 	btserver = BluetoothServer()

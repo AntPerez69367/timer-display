@@ -15,12 +15,12 @@ class Display(threading.Thread):
 		options.chain_length = 1
 		options.parallel = 1
 		options.hardware_mapping = 'adafruit-hat'
-		options.gpio_slowdown = 1
+		options.gpio_slowdown = 3
 		options.disable_hardware_pulsing = True
 
 		self._matrix = RGBMatrix(options = options)
 		self._matrix.pwmBits = 11
-		self._matrix.brightness = 25
+		self._matrix.brightness = 45
 
 
 		# Load fonts
@@ -91,10 +91,20 @@ class Display(threading.Thread):
 
 		## Slider
 		for x in range(0, slidetime):
-			canvas.SetPixel(x, 13, 255, 32, 32)
-			canvas.SetPixel(x, 14, 255, 32, 32)
-			canvas.SetPixel(x, 15, 255, 32, 32)
-			canvas.SetPixel(x, 16, 255, 32, 32)
+			ytime = self._sliderange / 2
+			rtime =  ytime + ytime / 2
+			if self._slidet < ytime:
+				canvas.SetPixel(x, 13, 255, 255, 255)
+				canvas.SetPixel(x, 14, 255, 255, 255)
+				canvas.SetPixel(x, 15, 255, 255, 255)
+			if self._slidet >= ytime and self._slidet < rtime:
+				canvas.SetPixel(x, 13, 255, 255, 0)
+				canvas.SetPixel(x, 14, 255, 255, 0)
+				canvas.SetPixel(x, 15, 255, 255, 0)
+			if self._slidet >= rtime:
+				canvas.SetPixel(x, 13, 255, 32, 32)
+				canvas.SetPixel(x, 14, 255, 32, 32)
+				canvas.SetPixel(x, 15, 255, 32, 32)
 
 	def sessionSet(self, arg1, arg2):
 		self._secs = sum(int(x) * 60 ** i for i,x in enumerate(reversed(arg1.split(":"))))
