@@ -169,7 +169,7 @@ class Display(threading.Thread):
 				self._draw(canvas, " READY! " , 0)
 				time.sleep(0.05)
 				canvas = self._matrix.SwapOnVSync(canvas)
-				print("Not running")
+				#print("Not running")
 
 
 if __name__ == '__main__':
