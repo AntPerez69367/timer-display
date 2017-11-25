@@ -44,6 +44,7 @@ class Display(threading.Thread):
 		self._secs = 0
 		self._slidet = 0
 		self._sname = 'mySurvey'
+		self.running = False
 		#--------------------------------#
 		# Important Locations            #
 		#--------------------------------#
@@ -100,17 +101,22 @@ class Display(threading.Thread):
 		self._slidet = int(arg2)
 
 	def stop(self):
+
+		self.running = False
 		self.alive = False
+		print ("Stop function completed")
 		self.join()
+		print ("Stop function completed")
 
 	def run(self):
 		canvas = self._matrix.CreateFrameCanvas()
 		self.alive = True
 		print ("Thread running")
 		try:
-			print ("2nd part thread")
-			while True:
-				print ("THis happened")
+			self.running = True
+			print ("Begin Loop")
+			while True and self.running:
+				print ("running: %s" % self.running)
 				if self._secs == 0:
 					if self._mins == 0:
 						if self._hours == 0:
