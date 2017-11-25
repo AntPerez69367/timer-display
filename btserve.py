@@ -37,20 +37,22 @@ try:
 			print("received [%s]" % data)
 			if data == '99':
 				if myLED.isAlive():
-
+					myLED.stop()
 			else:
-				args = data.split('_')
-				myLED.sessionSet(args[0], args[2])
-				print ("Received Timer Data: %s" % (args[0]))
-				print ("Received Survey Name: %s" % (args[1]))
-				print ("Received Slide Length: %s" % (args[2]))
-
+				if myLED.is_alive:
+					print("Thread already started")
+					pass
+				else:
+					myLED.start()
+					args = data.split('_')
+					myLED.sessionSet(args[0], args[2])
+					print ("Received Timer Data: %s" % (args[0]))
+					print ("Received Survey Name: %s" % (args[1]))
+					print ("Received Slide Length: %s" % (args[2]))
 except IOError:
 		pass
 
 print("disconnected")
-
 client_sock.close()
 server_sock.close()
 print("all done")
-
