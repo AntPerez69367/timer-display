@@ -128,7 +128,6 @@ class Display(threading.Thread):
 						self._mins -= 1
 						self._secs = 60
 
-
 				print ("Should display here")
 				sec = ('%02.f' % self._secs)
 				min = ('%02.f' % self._mins)

@@ -43,6 +43,7 @@ try:
 					print("Thread already started")
 					pass
 				else:
+					myLED = Display()
 					myLED.start()
 					args = data.split('_')
 					myLED.sessionSet(args[0], args[2])
