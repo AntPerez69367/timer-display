@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # file: rfcomm-server.py
 # auth: Albert Huang <albert@csail.mit.edu>
 # desc: simple demonstration of a server application that uses RFCOMM sockets
